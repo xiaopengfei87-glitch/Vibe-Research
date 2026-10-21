@@ -494,8 +494,8 @@ def tencent_quote(codes: list[str]) -> dict[str, dict]:
             "turnover_pct": float(vals[38]) if vals[38] else 0,
             "pe_ttm":       float(vals[39]) if vals[39] else 0,
             "amplitude_pct":float(vals[43]) if vals[43] else 0,
-            "mcap_yi":      float(vals[44]) if vals[44] else 0,
-            "float_mcap_yi":float(vals[45]) if vals[45] else 0,
+            "mcap_yi":      float(vals[45]) if vals[45] else 0,   # 45=总市值
+            "float_mcap_yi":float(vals[44]) if vals[44] else 0,   # 44=流通市值
             "pb":           float(vals[46]) if vals[46] else 0,
             "limit_up":     float(vals[47]) if vals[47] else 0,
             "limit_down":   float(vals[48]) if vals[48] else 0,
@@ -534,8 +534,8 @@ etf_quotes = tencent_quote(["510050", "510300"])
 | 38 | 换手率% | 4.55 |
 | **39** | **PE(TTM)** | 300.45 |
 | **43** | **振幅%（不是PB！）** | 7.22 |
-| **44** | **总市值(亿)** | 410.88 |
-| **45** | **流通市值(亿)** | 410.88 |
+| **44** | **流通市值(亿)** | 1844.90 |
+| **45** | **总市值(亿)** | 27812.12 |
 | **46** | **PB(市净率)** | 11.51 |
 | **47** | **涨停价** | 258.01 |
 | **48** | **跌停价** | 172.01 |
@@ -543,6 +543,7 @@ etf_quotes = tencent_quote(["510050", "510300"])
 | **52** | **PE(静)** | 314.76 |
 
 > **踩坑提醒：** 网上很多教程把索引 43 写成 PB，实测是振幅%。PB 在索引 46。
+> 索引 44 是**流通市值**、45 才是**总市值**（2026-10 用长鑫科技 688825 实测：44=1844.90、45=27812.12，与 72/73 流通股本 45.03 亿 / 总股本 678.84 亿 × 现价吻合）。全流通的老股两者几乎相等看不出差别，次新股 / 有限售股的票会差出一个数量级。
 
 ### 1.3 百度股市通 K线 — 带MA5/MA10/MA20（V3.0 新增）
 
@@ -2471,7 +2472,7 @@ def full_valuation(code: str) -> dict:
     data = resp.read().decode("gbk")
     vals = data.split('"')[1].split("~")
     price = float(vals[3])
-    mcap = float(vals[44])
+    mcap = float(vals[45])  # 45=总市值（44 是流通市值）
     pe_ttm = float(vals[39]) if vals[39] else 0
     pb = float(vals[46]) if vals[46] else 0
 

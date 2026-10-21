@@ -77,8 +77,9 @@ def _parse_gtimg(data: str) -> dict[str, dict]:
             "turnover_pct": num(38),
             "pe_ttm": num(39),
             "amplitude_pct": num(43),
-            "mcap_yi": num(44),
-            "float_mcap_yi": num(45),
+            # 腾讯：44=流通市值 45=总市值（实测，次新股差异巨大；勿对调）
+            "mcap_yi": num(45),
+            "float_mcap_yi": num(44),
             "pb": num(46),
             "limit_up": num(47),
             "limit_down": num(48),

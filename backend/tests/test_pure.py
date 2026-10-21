@@ -34,7 +34,8 @@ def _gtimg_line(**overrides) -> str:
     parts[1] = overrides.get("name", "贵州茅台")
     parts[3] = overrides.get("price", "1194.45")
     parts[39] = overrides.get("pe_ttm", "18.05")
-    parts[44] = overrides.get("mcap", "15000")
+    parts[44] = overrides.get("float_mcap", "14000")
+    parts[45] = overrides.get("mcap", "15000")
     parts[46] = overrides.get("pb", "6.41")
     return 'v_sh600519="' + "~".join(parts) + '";'
 
@@ -47,7 +48,8 @@ def test_parse_gtimg():
     assert q["price"] == 1194.45
     assert q["pe_ttm"] == 18.05
     assert q["pb"] == 6.41
-    assert q["mcap_yi"] == 15000
+    assert q["mcap_yi"] == 15000          # 索引 45 = 总市值
+    assert q["float_mcap_yi"] == 14000    # 索引 44 = 流通市值
 
 
 def test_parse_gtimg_bad_line_ignored():
